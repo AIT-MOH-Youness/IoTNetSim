@@ -174,19 +174,7 @@ Here are step-by-step instructions to get your project up and running locally:
     ```
     - Access the app at [http://localhost:3000](http://localhost:3000).
 
----
 
-## Video Demonstration
-(Optional) Record a video or screencast showcasing:
-- Adding and connecting IoT devices.
-- Configuring protocols like MQTT or HTTP.
-- Real-time traffic visualization.
-
-Ensure the video adheres to the following:
-- MP4 format, max 150MB.
-- Dimensions: 640x480 at 30 FPS.
-
-Validate the video at [Elsevier's Video Validator](http://elsevier-apps.sciverse.com/GadgetVideoPodcastPlayerWeb/verification).
 
 ---
 
@@ -214,7 +202,7 @@ Validate the video at [Elsevier's Video Validator](http://elsevier-apps.sciverse
 ---
 
 
-## Démonstration
+## Demo
 
 https://github.com/user-attachments/assets/44e1886c-5388-492b-a93e-7c839a5075ad
 
