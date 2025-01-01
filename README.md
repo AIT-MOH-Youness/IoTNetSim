@@ -125,6 +125,9 @@ Here are step-by-step instructions to get your project up and running locally:
    - Install NVM from [github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm).
    - Use NVM to install Node.js version 14.11.0: nvm install 14.11.0.
 
+4. *Mosquito:*
+   - Install Mosquito from https://mosquitto.org/download/.
+
 ### Steps:
 1. Clone the repository:
     ```
