@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const AjouterAppareil: React.FC = () => {
   const [name, setName] = useState('');
@@ -11,6 +12,7 @@ const AjouterAppareil: React.FC = () => {
   const [energyConsumption, setEnergyConsumption] = useState(0);
   const [status, setStatus] = useState('Active'); // Statut par défaut
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   // Récupérer les protocoles de l'API
   useEffect(() => {
@@ -19,7 +21,9 @@ const AjouterAppareil: React.FC = () => {
         const response = await fetch('http://localhost:8080/api/protocols');
         const data = await response.json();
         // Extraire uniquement les noms des protocoles
-        const protocolNames = data.map((protocol: { name: string }) => protocol.name);
+        const protocolNames = data.map(
+          (protocol: { name: string }) => protocol.name,
+        );
         setProtocols(protocolNames);
       } catch (err) {
         console.error('Failed to fetch protocols:', err);
@@ -52,7 +56,10 @@ const AjouterAppareil: React.FC = () => {
 
   // Gestion des changements dans le select des protocoles
   const handleProtocolChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value,
+    );
     setSelectedProtocols(selectedOptions);
   };
 
@@ -65,10 +72,22 @@ const AjouterAppareil: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !type || selectedProtocols.length === 0 || !fabricator || status === '' || energyConsumption === null) {
+    if (
+      !name ||
+      !type ||
+      selectedProtocols.length === 0 ||
+      !fabricator ||
+      status === '' ||
+      energyConsumption === null
+    ) {
       setError('Veuillez remplir tous les champs.');
       return;
     }
+
+    const selectedProtocolsString = `[${selectedProtocols
+      .map((protocol) => `"${protocol}"`)
+      .join(', ')}]`;
+    console.log(selectedProtocolsString);
 
     try {
       const response = await fetch('http://localhost:8080/api/devices', {
@@ -77,7 +96,7 @@ const AjouterAppareil: React.FC = () => {
         body: JSON.stringify({
           name,
           type,
-          protocols: selectedProtocols, // Protocoles sous forme de tableau
+          protocol: selectedProtocolsString, // Protocoles sous forme de tableau
           batteryLevel,
           fabricator,
           energyConsumption,
@@ -86,7 +105,7 @@ const AjouterAppareil: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Échec de l\'ajout de l\'appareil.');
+        throw new Error("Échec de l'ajout de l'appareil.");
       }
 
       // Réinitialiser le formulaire après soumission réussie
@@ -99,8 +118,9 @@ const AjouterAppareil: React.FC = () => {
       setBatteryLevel(100);
       setError('');
       alert('Appareil ajouté avec succès!');
+      navigate("/tables")
     } catch (err) {
-      setError('Une erreur est survenue lors de l\'ajout de l\'appareil.');
+      setError("Une erreur est survenue lors de l'ajout de l'appareil.");
     }
   };
 

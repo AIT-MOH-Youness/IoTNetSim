@@ -223,7 +223,7 @@ const Login: React.FC = () => {
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-800 text-white font-semibold rounded-lg transition duration-200"
             >
-              Sign Up
+              Sign In
             </button>
           </form>
           {message && <p className="mt-4 text-sm text-red-500">{message}</p>}

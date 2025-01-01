@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb.tsx';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const AjouterUtilisateur: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +14,7 @@ const AjouterUtilisateur: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   // Gestion des changements d'input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +62,8 @@ const AjouterUtilisateur: React.FC = () => {
 
       if (response.ok) {
         setSuccess(true);
-        setFormData({ username: '', email: '', password: '' }); // Réinitialiser les champs
+        setFormData({ username: '', email: '', password: '' });
+        navigate("/tables")
       } else {
         throw new Error('Erreur lors de l\'ajout de l\'utilisateur.');
       }

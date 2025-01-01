@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../../images/logo/logo-icon.png';
 import Logo from '../../../images/logo/logo-dark.png';
 
+
+
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -12,6 +14,7 @@ const Register: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,8 +49,7 @@ const Register: React.FC = () => {
 
       if (response.ok) {
         setSuccess('Registration successful! You can now log in.');
-        const navigate = useNavigate();
-        navigate('/auth/signin');
+        navigate('/');
       } else {
         const errorResult = await response.json();
         setError(errorResult.message || 'Registration failed!');

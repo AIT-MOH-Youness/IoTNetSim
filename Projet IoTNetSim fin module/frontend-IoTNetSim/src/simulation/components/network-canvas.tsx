@@ -44,7 +44,7 @@ const initialNodes: Node[] = [
     {
         id: "gateway-1",
         type: "networkDevice",
-        data: { label: "Gateway-1", deviceType: "gateway" },
+        data: { label: "Gateway-1", deviceType: "gateway", idDevice: "1" },
         position: { x: 250, y: 200 },
     },
 ];
@@ -153,6 +153,7 @@ export function NetworkCanvas({ protocol, simulation, user}: NetworkCanvasProps)
             event.preventDefault();
 
             let type = event.dataTransfer.getData("application/reactflow");
+            let id = event.dataTransfer.getData("application/reactflow-id");
             let typeCapt = null;
             const name = event.dataTransfer.getData("application/reactflow-name");
             const icon = event.dataTransfer.getData("application/reactflow-icon");
@@ -175,6 +176,7 @@ export function NetworkCanvas({ protocol, simulation, user}: NetworkCanvasProps)
                     label: `${name}-${nodes.length + 1}`,
                     type: `${typeCapt}`,
                     deviceType: type,
+                    idDevice: id,
                     protocol,
                     icon,
                 },
@@ -235,7 +237,7 @@ export function NetworkCanvas({ protocol, simulation, user}: NetworkCanvasProps)
                 id: node.id,
                 type: node.type,
                 position: node.position,
-                data: node.data,
+                data: { ...node.data, idDevice: node.data.idDevice || 0 },
             })),
             edges: edges.map((edge) => ({
                 id: edge.id,

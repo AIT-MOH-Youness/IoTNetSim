@@ -1,7 +1,10 @@
 package com.iotnetworksimulator.dto;
 
 import lombok.Data;
+import lombok.ToString;
+
 @Data
+@ToString
 public class NodeDTO {
     private String id;
     private String type;
@@ -18,6 +21,7 @@ public class NodeDTO {
     public static class DataSe {
         private String label;
         private String deviceType;
+        private String idDevice;
 
     }
 }

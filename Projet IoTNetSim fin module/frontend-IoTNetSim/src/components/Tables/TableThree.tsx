@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Définition des types
@@ -30,8 +30,8 @@ interface Protocol {
   packetTaillemax: number;
   powerTransmission: number;
   bandwidth: number;
-  sF: number;
-  cR: number;
+  sf: number;
+  cr: number;
 }
 
 
@@ -67,6 +67,7 @@ const TableThree: React.FC = () => {
         setUsers(usersData);
         setDevices(devicesData);
         setProtocols(protocolsData);
+        console.log(protocolsData);
       } catch (err) {
         setError('An error occurred while fetching the data.');
       } finally {
@@ -109,6 +110,27 @@ const TableThree: React.FC = () => {
     }
   };
 
+  // Delete Protocol
+  const handleDeleteProtocol = async (protocolId: number) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/protocols/${protocolId}`,
+        {
+          method: 'DELETE',
+        },
+      );
+      if (res.ok) {
+        setProtocols(
+          protocols.filter((protocol) => protocol.id !== protocolId),
+        );
+      } else {
+        setError('Failed to delete the protocol.');
+      }
+    } catch (err) {
+      setError('An error occurred while deleting the protocol.');
+    }
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-6 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-8 xl:pb-3">
       {loading ? (
@@ -125,7 +147,10 @@ const TableThree: React.FC = () => {
               Les Utilisateurs
             </h3>
             <div className="flex justify-end mb-6">
-              <span className="text-blue-600 hover:underline cursor-pointer" onClick={() => navigate('/users/add')}>
+              <span
+                className="text-blue-600 hover:underline cursor-pointer"
+                onClick={() => navigate('/users/add')}
+              >
                 Ajouter
               </span>
             </div>
@@ -168,7 +193,10 @@ const TableThree: React.FC = () => {
               Les Devices
             </h3>
             <div className="flex justify-end mb-6">
-              <span className="text-blue-600 hover:underline cursor-pointer" onClick={() => navigate('/devices/add')}>
+              <span
+                className="text-blue-600 hover:underline cursor-pointer"
+                onClick={() => navigate('/devices/add')}
+              >
                 Ajouter
               </span>
             </div>
@@ -177,7 +205,7 @@ const TableThree: React.FC = () => {
                 'Nom',
                 'Type',
                 'Protocole',
-                'Énergie',
+                'Énergie consommé par Round (Mj)',
                 'Fabricant',
                 'Statut',
                 'Action',
@@ -199,7 +227,30 @@ const TableThree: React.FC = () => {
                   {device.type}
                 </div>
                 <div className="flex items-center justify-center p-3 xl:p-6">
-                  {device.protocol}
+                  {
+                    <div className="flex items-center justify-center p-3 xl:p-6">
+                      {
+                        <div className="flex flex-wrap gap-2 items-center justify-center p-3 xl:p-6">
+                          {Array.isArray(JSON.parse(device.protocol)) ? (
+                            JSON.parse(device.protocol).map(
+                              (protocol, index) => (
+                                <span
+                                  key={index}
+                                  className="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-medium"
+                                >
+                                  {protocol}
+                                </span>
+                              ),
+                            )
+                          ) : (
+                            <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
+                              {device.protocol}
+                            </span>
+                          )}
+                        </div>
+                      }
+                    </div>
+                  }
                 </div>
                 <div className="flex items-center justify-center p-3 xl:p-6">
                   {device.energyConsumption}
@@ -211,7 +262,7 @@ const TableThree: React.FC = () => {
                   {device.status}
                 </div>
                 <div className="flex items-center justify-center p-3 xl:p-6">
-                  <button className="text-green-500 mr-4" >Modifier</button>
+                  <button className="text-green-500 mr-4">Modifier</button>
                   <button
                     className="text-red-500"
                     onClick={() => handleDeleteDevice(device.id)}
@@ -231,68 +282,72 @@ const TableThree: React.FC = () => {
               Les Protocoles
             </h3>
             <div className="flex justify-end mb-6">
-              <span className="text-blue-600 hover:underline cursor-pointer" onClick={() => navigate('/protocols/add')}>
+              <span
+                className="text-blue-600 hover:underline cursor-pointer"
+                onClick={() => navigate('/protocols/add')}
+              >
                 Ajouter
               </span>
             </div>
             <div className="overflow-x-auto rounded-lg shadow-md">
               <table className="w-full text-sm text-left text-gray-600 dark:text-gray-400">
                 <thead className="bg-gray-100 dark:bg-gray-700">
-                <tr>
-                  {[
-                    'Nom',
-                    'Vitesse Max',
-                    'Portée',
-                    "Consommation d'énergie",
-                    'Taille Min',
-                    'Taille Max',
-                    'Puissance',
-                    'Bande',
-                    'SF',
-                    'CR',
-                    'Action',
-                  ].map((header, index) => (
-                    <th
-                      key={index}
-                      className="px-6 py-4 font-medium text-gray-800 dark:text-white"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
+                  <tr>
+                    {[
+                      'Nom',
+                      'Débit Max',
+                      'Portée',
+                      "Consommation d'énergie",
+                      'Taille Min de paquet',
+                      'Taille Max de paquet',
+                      'Puissance de transmission',
+                      'Bande',
+                      "Facteur d'étalement (SF) ",
+                      'Code Rate (CR)',
+                      'Action',
+                    ].map((header, index) => (
+                      <th
+                        key={index}
+                        className="px-6 py-4 font-medium text-gray-800 dark:text-white"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
                 </thead>
                 <tbody>
-                {protocols.map((protocol, idx) => (
-                  <tr
-                    key={protocol.id}
-                    className={
-                      idx % 2 === 0
-                        ? 'bg-white dark:bg-gray-800'
-                        : 'bg-gray-50 dark:bg-gray-900'
-                    }
-                  >
-                    <td className="px-6 py-4">{protocol.name}</td>
-                    <td className="px-6 py-4">{protocol.maxDataRate}</td>
-                    <td className="px-6 py-4">{protocol.range}</td>
-                    <td className="px-6 py-4">{protocol.powerConsumption}</td>
-                    <td className="px-6 py-4">{protocol.packetTaillemin}</td>
-                    <td className="px-6 py-4">{protocol.packetTaillemax}</td>
-                    <td className="px-6 py-4">
-                      {protocol.powerTransmission}
-                    </td>
-                    <td className="px-6 py-4">{protocol.bandwidth}</td>
-                    <td className="px-6 py-4">{protocol.sF}</td>
-                    <td className="px-6 py-4">{protocol.cR}</td>
-                    <td className="px-6 py-4">
-                      <button className="text-green-500 hover:underline mr-4">
-                        Modifier
-                      </button>
-                      <button className="text-red-500 hover:underline">
-                        Supprimer
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                  {protocols.map((protocol, idx) => (
+                    <tr
+                      key={protocol.id}
+                      className={
+                        idx % 2 === 0
+                          ? 'bg-white dark:bg-gray-800'
+                          : 'bg-gray-50 dark:bg-gray-900'
+                      }
+                    >
+                      <td className="px-6 py-4">{protocol.name}</td>
+                      <td className="px-6 py-4">{protocol.maxDataRate}</td>
+                      <td className="px-6 py-4">{protocol.range}</td>
+                      <td className="px-6 py-4">{protocol.powerConsumption}</td>
+                      <td className="px-6 py-4">{protocol.packetTaillemin}</td>
+                      <td className="px-6 py-4">{protocol.packetTaillemax}</td>
+                      <td className="px-6 py-4">
+                        {protocol.powerTransmission}
+                      </td>
+                      <td className="px-6 py-4">{protocol.bandwidth}</td>
+                      <td className="px-6 py-4">{protocol.sf}</td>
+                      <td className="px-6 py-4">{protocol.cr}</td>
+                      <td className="px-6 py-4">
+                        <button className="text-green-500 hover:underline mr-4">
+                          Modifier
+                        </button>
+                        <button className="text-red-500 hover:underline"
+                                onClick={() => handleDeleteProtocol(protocol.id)}>
+                          Supprimer
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

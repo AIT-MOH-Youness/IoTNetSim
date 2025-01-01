@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const AjouterProtocole: React.FC = () => {
   const [name, setName] = useState('');
@@ -11,13 +12,24 @@ const AjouterProtocole: React.FC = () => {
   const [packetTaillemax, setPacketTaillemax] = useState(0);
   const [powerTransmission, setPowerTransmission] = useState(0);
   const [bandwidth, setBandwidth] = useState(0);
-  const [sF, setSF] = useState(0);
-  const [cR, setCR] = useState(0);
+  const [sf, setSF] = useState(0);
+  const [cr, setCR] = useState(0);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !color || !maxDataRate || !range || !powerConsumption || !powerTransmission || !bandwidth || !sF || !cR) {
+    if (
+      !name ||
+      !color ||
+      !maxDataRate ||
+      !range ||
+      !powerConsumption ||
+      !powerTransmission ||
+      !bandwidth ||
+      !sf ||
+      !cr
+    ) {
       setError('Veuillez remplir tous les champs.');
       return;
     }
@@ -36,13 +48,13 @@ const AjouterProtocole: React.FC = () => {
           packetTaillemax,
           powerTransmission,
           bandwidth,
-          sF,
-          cR,
+          sf,
+          cr,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Échec de l\'ajout du protocole.');
+        throw new Error("Échec de l'ajout du protocole.");
       }
 
       // Reset form after successful submission
@@ -59,8 +71,9 @@ const AjouterProtocole: React.FC = () => {
       setCR(0);
       setError('');
       alert('Protocole ajouté avec succès!');
+      navigate('/tables');
     } catch (err) {
-      setError('Une erreur est survenue lors de l\'ajout du protocole.');
+      setError("Une erreur est survenue lors de l'ajout du protocole.");
     }
   };
 
@@ -123,7 +136,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="maxDataRate"
                     >
-                      Débit max
+                      Débit max (kbps)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -142,7 +155,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="range"
                     >
-                      Portée
+                      Portée (m)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -161,7 +174,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="powerConsumption"
                     >
-                      Consommation d'énergie
+                      Consommation d'énergie (mJ)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -180,7 +193,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="packetTaillemin"
                     >
-                      Taille de paquet min
+                      Taille de paquet min (bit)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -189,7 +202,9 @@ const AjouterProtocole: React.FC = () => {
                       id="packetTaillemin"
                       placeholder="Taille de paquet min"
                       value={packetTaillemin}
-                      onChange={(e) => setPacketTaillemin(Number(e.target.value))}
+                      onChange={(e) =>
+                        setPacketTaillemin(Number(e.target.value))
+                      }
                     />
                   </div>
 
@@ -199,7 +214,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="packetTaillemax"
                     >
-                      Taille de paquet max
+                      Taille de paquet max (bit)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -208,7 +223,9 @@ const AjouterProtocole: React.FC = () => {
                       id="packetTaillemax"
                       placeholder="Taille de paquet max"
                       value={packetTaillemax}
-                      onChange={(e) => setPacketTaillemax(Number(e.target.value))}
+                      onChange={(e) =>
+                        setPacketTaillemax(Number(e.target.value))
+                      }
                     />
                   </div>
 
@@ -218,7 +235,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="powerTransmission"
                     >
-                      Transmission de puissance
+                      Puissance de Transmission (mW)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -227,7 +244,9 @@ const AjouterProtocole: React.FC = () => {
                       id="powerTransmission"
                       placeholder="Transmission de puissance"
                       value={powerTransmission}
-                      onChange={(e) => setPowerTransmission(Number(e.target.value))}
+                      onChange={(e) =>
+                        setPowerTransmission(Number(e.target.value))
+                      }
                     />
                   </div>
 
@@ -237,7 +256,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="bandwidth"
                     >
-                      Bande passante
+                      Bande passante (Mhz)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -256,7 +275,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="sF"
                     >
-                      SF
+                      Facteur d'étalement (SF)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -264,8 +283,8 @@ const AjouterProtocole: React.FC = () => {
                       name="sF"
                       id="sF"
                       placeholder="SF"
-                      value={sF}
-                      onChange={(e) => setSF(Number(e.target.value))}
+                      value={sf}
+                      onChange={(e) => setSF((e.target.value) || 0)}
                     />
                   </div>
 
@@ -275,7 +294,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="cR"
                     >
-                      CR
+                      Code Rate (CR)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -283,8 +302,8 @@ const AjouterProtocole: React.FC = () => {
                       name="cR"
                       id="cR"
                       placeholder="CR"
-                      value={cR}
-                      onChange={(e) => setCR(Number(e.target.value))}
+                      value={cr}
+                      onChange={(e) => setCR((e.target.value))}
                     />
                   </div>
 
@@ -295,9 +314,7 @@ const AjouterProtocole: React.FC = () => {
                     Ajouter le protocole
                   </button>
                 </form>
-                {error && (
-                  <p className="text-red-500 text-sm mt-2">{error}</p>
-                )}
+                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
               </div>
             </div>
           </div>

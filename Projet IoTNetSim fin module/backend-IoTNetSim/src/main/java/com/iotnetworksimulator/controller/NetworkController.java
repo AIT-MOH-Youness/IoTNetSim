@@ -21,6 +21,15 @@ public class NetworkController {
             return ResponseEntity.badRequest().body("Invalid data structure");
         }
 
+        request.getNodes().forEach(node -> {
+
+            if(node.getData().getIdDevice()==null){
+                node.getData().setIdDevice(String.valueOf(0));
+            }
+
+        });
+
+
         try {
             // Start the simulation
             networkService.processNetworkData(request);

@@ -87,9 +87,11 @@ export function DevicePanel({protocol}: DevicePanelProps) {
       nodeType: string,
       nodeName: string,
       nodeIcon: React.ReactNode,
+      nodeId: number,
   ) => {
     event.dataTransfer.setData("application/reactflow", nodeType)
     event.dataTransfer.setData("application/reactflow-name", nodeName)
+    event.dataTransfer.setData("application/reactflow-id", String(nodeId))
     event.dataTransfer.setData("application/reactflow-icon", JSON.stringify(nodeIcon))
     event.dataTransfer.effectAllowed = "move"
   }
@@ -106,7 +108,7 @@ export function DevicePanel({protocol}: DevicePanelProps) {
                 <div
                     key={device.name}
                     draggable
-                    onDragStart={(e) => onDragStart(e, device.type, device.name,device.icon)}
+                    onDragStart={(e) => onDragStart(e, device.type, device.name,device.icon,device.id )}
                     className={clsx(
                         "flex cursor-move flex-col items-center gap-2 rounded-lg border p-4 transition-colors bg-white-800 hover:bg-white-700 border-gray-600 hover:border-gray-500"
 

@@ -4,7 +4,9 @@ import com.iotnetworksimulator.dto.EdgeDTO;
 import com.iotnetworksimulator.dto.NetworkRequestDTO;
 import com.iotnetworksimulator.dto.NodeDTO;
 import com.iotnetworksimulator.dto.TrafficUpdateDTO;
+import com.iotnetworksimulator.model.Device;
 import com.iotnetworksimulator.model.Protocol;
+import com.iotnetworksimulator.repository.DeviceRepository;
 import com.iotnetworksimulator.repository.ProtocolRepository;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -29,6 +31,8 @@ public class NetworkService {
 
     @Autowired
     ProtocolRepository protocolRepository;
+    @Autowired
+    private DeviceRepository deviceRepository;
 
     @Autowired
     public NetworkService(SimpMessagingTemplate messagingTemplate, MqttClient mqttClient) {
@@ -37,6 +41,11 @@ public class NetworkService {
     }
 
     public void processNetworkData(NetworkRequestDTO request) {
+        
+
+
+
+
         Protocol protocol = protocolRepository.findFirstByName(request.getProtocol());
         List<NodeDTO> nodes = request.getNodes();
         List<EdgeDTO> edges = request.getEdges();
@@ -100,8 +109,19 @@ public class NetworkService {
                 packetsSent = packetsSent + packetActuel;
                 double dataRate = (protocol.getSF()*protocol.getBandwidth())/(Math.pow(2,protocol.getSF()));
                 double tempsTransmission = packetActuel/dataRate;
-                double energyActuel = protocol.getPowerTransmission()*tempsTransmission*edges.size();
-                energyConsumed = energyConsumed + energyActuel/1000;
+
+                Device deviceEquivalent = deviceRepository.findById(Long.parseLong(node.getData().getIdDevice())).orElse(null);
+                double energyConsumedoFDevice;
+
+                if(deviceEquivalent==null){
+                    energyConsumedoFDevice = 0;
+                }
+                else{
+                    energyConsumedoFDevice = deviceEquivalent.getEnergyConsumption();
+                }
+                
+                double energyActuel = (protocol.getPowerTransmission()*tempsTransmission*edges.size()/1000) + (energyConsumedoFDevice) ;
+                energyConsumed = energyConsumed + energyActuel;
             }
 
         }
