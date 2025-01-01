@@ -126,7 +126,7 @@ Here are step-by-step instructions to get your project up and running locally:
    - Use NVM to install Node.js version 14.11.0: nvm install 14.11.0.
 
 4. *Mosquito:*
-   - Install Mosquito from https://mosquitto.org/download/.
+   - Install Mosquito for MQTT implementation from https://mosquitto.org/download/.
 
 ### Steps:
 1. Clone the repository:
