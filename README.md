@@ -14,7 +14,7 @@ This platform enables users to design and simulate IoT networks with features si
 
 ## Software Architecture
 
-![WhatsApp Image 2024-12-28 at 20 55 24](https://github.com/user-attachments/assets/8f5b3843-e55e-42d5-99a4-589f0d1741a4)
+![Architecture](https://github.com/user-attachments/assets/42795f03-d126-4dfa-bb91-07d22ce53d2c)
 
 
 The system architecture comprises a Spring Boot backend and a React frontend, communicating via REST APIs. WebSocket is used for real-time traffic visualization.
