@@ -1,5 +1,7 @@
 FROM node:20.16.0-alpine as builder
 
+EXPOSE 8080
+
 WORKDIR /app
 
 COPY . .

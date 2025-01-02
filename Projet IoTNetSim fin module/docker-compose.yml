@@ -1,12 +1,17 @@
-version: '3'
+
 services:
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_DATABASE: iotnetsim
     ports:
       - "3306:3306"
+
+  mqtt:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
 
   backend:
     build:
@@ -19,9 +24,9 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/iotnetsim
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_PASSWORD: ""
     healthcheck:
-      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --user=root --password= --execute \"SHOW DATABASES;\""
       interval: 5s
       timeout: 2s
       retries: 100
@@ -40,6 +45,6 @@ services:
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ""
     ports:
-      - "8081:80"
+      - "8090:91"

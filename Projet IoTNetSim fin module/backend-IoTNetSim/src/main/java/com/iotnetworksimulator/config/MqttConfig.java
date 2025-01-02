@@ -18,8 +18,6 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 public class MqttConfig {
 
-    private static final String MQTT_BROKER = "tcp://localhost:1883"; // رابط بروكر MQTT
-    private static final String MQTT_CLIENT_ID = "springBootClient";
 
     @Bean
     public MqttClient mqttClient() throws MqttException {
