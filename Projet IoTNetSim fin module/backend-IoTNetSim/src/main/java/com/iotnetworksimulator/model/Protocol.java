@@ -21,6 +21,7 @@ public class Protocol {
     private double packetTaillemax;
     private double powerTransmission;
     private double bandwidth;
+    private double modulationOrdre;
     private double sF;
     private double cR;
 

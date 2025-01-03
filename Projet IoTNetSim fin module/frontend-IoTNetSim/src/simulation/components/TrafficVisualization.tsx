@@ -80,7 +80,7 @@ const TrafficVisualization: React.FC<TrafficVisualizationProps> = ({ isRunning }
   return (
     <Card className="w-full h-full">
       <CardHeader>
-        <CardTitle>Traffic du réseau (bits/round)</CardTitle>
+        <CardTitle>Traffic du réseau (Kbits/round)</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>

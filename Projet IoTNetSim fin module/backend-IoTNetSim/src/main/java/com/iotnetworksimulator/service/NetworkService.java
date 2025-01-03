@@ -61,33 +61,8 @@ public class NetworkService {
             coverage=0;
             lastMods=nowMods;
         }
-        
-        int nbrEdges = edges.size();
 
-        for (EdgeDTO edge : edges) {
-            switch (request.getProtocol()) {
-                case "LoRa":
-                    // Specific behavior for LoRa
-                    if(edge.getDistance()<15000); // Example logic
-                    nbrEdges--;
-                    break;
 
-                case "ZigBee":
-                    // Specific behavior for ZigBee
-                    if(edge.getDistance()<100); // Example logic
-                    nbrEdges--;
-                    break;
-
-                case "NB-IoT":
-                    // Specific behavior for NB-IoT
-                    if(edge.getDistance()<100); // Example logic
-                    nbrEdges--;
-                    break;
-
-                default:
-                    break;
-            }
-        }
 
         // Variables pour les contraintes
         Random random = new Random();
@@ -106,8 +81,14 @@ public class NetworkService {
                 );
                 publishToMqtt(topic, payload);
                 double packetActuel = random.nextDouble(protocol.getPacketTaillemin(),protocol.getPacketTaillemax())*edges.size();
-                packetsSent = packetsSent + packetActuel;
-                double dataRate = (protocol.getSF()*protocol.getBandwidth())/(Math.pow(2,protocol.getSF()));
+                packetsSent = packetsSent + (8*packetActuel)/1024;
+                double dataRate;
+                if(protocol.getSF()!=0){
+                    dataRate = (protocol.getSF()*protocol.getBandwidth())/(Math.pow(2,protocol.getSF()));
+                }
+                else{
+                    dataRate = (protocol.getBandwidth()*protocol.getModulationOrdre()*protocol.getCR());
+                }
                 double tempsTransmission = packetActuel/dataRate;
 
                 Device deviceEquivalent = deviceRepository.findById(Long.parseLong(node.getData().getIdDevice())).orElse(null);

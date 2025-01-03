@@ -28,11 +28,11 @@ const devices: DeviceType[] = await fetch('http://localhost:8080/api/devices')
       ...device,
       icon: (() => {
         switch (device.type.toLowerCase()) {
-          case "networkdevice":
-            if(device.name === "Router")
+          case "network device":
+            if(device.name === "Hub")
+              return <SettingsIcon className="h-8 w-8"/>
+            else
               return <Router className="h-8 w-8"/>;
-            else if(device.name === "Hub")
-              return <SettingsIcon className="h-8 w-8"/>;
           case "temperature":
             return <ThermometerIcon className="h-8 w-8"/>;
           case "light":

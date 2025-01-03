@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.iotnetworksimulator.service.RegistrationService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,22 +42,25 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 public class AuthController {
   @Autowired
-  AuthenticationManager authenticationManager;
+  private AuthenticationManager authenticationManager;
 
   @Autowired
-  UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Autowired
-  ActualUserRepository actualUserRepository;
+  private ActualUserRepository actualUserRepository;
 
   @Autowired
-  RoleRepository roleRepository;
+  private RoleRepository roleRepository;
 
   @Autowired
-  PasswordEncoder encoder;
+  private RegistrationService registrationService;
 
   @Autowired
-  JwtUtils jwtUtils;
+  private PasswordEncoder encoder;
+
+  @Autowired
+  private JwtUtils jwtUtils;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -76,8 +80,10 @@ public class AuthController {
         .collect(Collectors.toSet());
 
 
+
     User user = new User(userDetails.getId(), userDetails.getUsername(),
-            userDetails.getEmail(), userDetails.getPassword(), roles);
+            userDetails.getEmail(), userDetails.getPassword(), roles,userDetails.isEnabled());
+
 
     ActualUser actualUser = new ActualUser(user);
     actualUserRepository.save(actualUser);
@@ -160,7 +166,7 @@ public class AuthController {
     }
 
     user.setRoles(roles);
-    userRepository.save(user);
+    registrationService.registerUser(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

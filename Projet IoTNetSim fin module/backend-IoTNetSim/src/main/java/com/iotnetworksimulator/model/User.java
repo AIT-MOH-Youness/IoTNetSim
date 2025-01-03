@@ -32,6 +32,9 @@ public class User {
   @Email
   private String email;
 
+  private boolean enabled;
+
+
   @NotBlank
   @Size(max = 120)
   private String password;
@@ -61,6 +64,15 @@ public class User {
     this.email = email;
     this.password = password;
     this.roles = roles;
+  }
+
+  public User(Long id, String username, String email, String password, Set<Role> roles, boolean enabled) {
+    this.id = id;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.roles = roles;
+    this.enabled = enabled;
   }
 
   public Long getId() {
@@ -110,5 +122,13 @@ public class User {
 
   public void setBio(String bio) {
     this.bio = bio;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 }

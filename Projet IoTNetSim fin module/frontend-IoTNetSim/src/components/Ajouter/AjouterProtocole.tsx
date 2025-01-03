@@ -10,6 +10,7 @@ const AjouterProtocole: React.FC = () => {
   const [powerConsumption, setPowerConsumption] = useState('');
   const [packetTaillemin, setPacketTaillemin] = useState(0);
   const [packetTaillemax, setPacketTaillemax] = useState(0);
+  const [modulationOrdre, setModulationOrdre] = useState(0);
   const [powerTransmission, setPowerTransmission] = useState(0);
   const [bandwidth, setBandwidth] = useState(0);
   const [sf, setSF] = useState(0);
@@ -48,6 +49,7 @@ const AjouterProtocole: React.FC = () => {
           packetTaillemax,
           powerTransmission,
           bandwidth,
+          modulationOrdre,
           sf,
           cr,
         }),
@@ -193,7 +195,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="packetTaillemin"
                     >
-                      Taille de paquet min (bit)
+                      Taille de paquet min (byte)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -214,7 +216,7 @@ const AjouterProtocole: React.FC = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="packetTaillemax"
                     >
-                      Taille de paquet max (bit)
+                      Taille de paquet max (byte)
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -306,6 +308,29 @@ const AjouterProtocole: React.FC = () => {
                       onChange={(e) => setCR((e.target.value))}
                     />
                   </div>
+
+
+
+                  {/* Modulation */}
+                  <div className="mb-5.5">
+                    <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="modulationOrdre"
+                    >
+                      Ordre de Modulation
+                    </label>
+                    <input
+                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
+                        type="number"
+                        name="modulationOrdre"
+                        id="modulationOrdre"
+                        placeholder="modulationOrdre"
+                        value={modulationOrdre}
+                        onChange={(e) => setModulationOrdre((e.target.value))}
+                    />
+                  </div>
+
+
 
                   <button
                     type="submit"

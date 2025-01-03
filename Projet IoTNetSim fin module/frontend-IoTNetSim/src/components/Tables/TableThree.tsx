@@ -173,7 +173,6 @@ const TableThree: React.FC = () => {
                   {user.email}
                 </div>
                 <div className="flex items-center justify-center p-3 xl:p-6">
-                  <button className="text-green-500 mr-4">Modifier</button>
                   <button
                     className="text-red-500"
                     onClick={() => handleDeleteUser(user.id)}
@@ -262,7 +261,6 @@ const TableThree: React.FC = () => {
                   {device.status}
                 </div>
                 <div className="flex items-center justify-center p-3 xl:p-6">
-                  <button className="text-green-500 mr-4">Modifier</button>
                   <button
                     className="text-red-500"
                     onClick={() => handleDeleteDevice(device.id)}
@@ -295,13 +293,13 @@ const TableThree: React.FC = () => {
                   <tr>
                     {[
                       'Nom',
-                      'Débit Max',
+                      'Débit Max (Kbps)',
                       'Portée',
-                      "Consommation d'énergie",
-                      'Taille Min de paquet',
-                      'Taille Max de paquet',
-                      'Puissance de transmission',
-                      'Bande',
+                      "Consommation d'énergie (mJ) ",
+                      'Taille Min de paquet (Octet)',
+                      'Taille Max de paquet (Octet)',
+                      'Puissance de transmission (mW)',
+                      'Bande (Mhz)',
                       "Facteur d'étalement (SF) ",
                       'Code Rate (CR)',
                       'Action',
@@ -338,9 +336,6 @@ const TableThree: React.FC = () => {
                       <td className="px-6 py-4">{protocol.sf}</td>
                       <td className="px-6 py-4">{protocol.cr}</td>
                       <td className="px-6 py-4">
-                        <button className="text-green-500 hover:underline mr-4">
-                          Modifier
-                        </button>
                         <button className="text-red-500 hover:underline"
                                 onClick={() => handleDeleteProtocol(protocol.id)}>
                           Supprimer
